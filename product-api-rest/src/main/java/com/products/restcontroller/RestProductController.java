@@ -11,69 +11,56 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.products.entities.Category;
-import com.products.exceptions.CategoryNotFoundException;
-import com.products.service.ICategoryService;
+import com.products.entities.Product;
+import com.products.exceptions.ProductNotFoundException;
+import com.products.service.IProductService;
 
 @RestController
-@RequestMapping("/api/category/")
+@RequestMapping(value = "/api/products/")
 public class RestProductController {
+
 	@Autowired
-	private ICategoryService categoryService;
+	private IProductService productService;
 
-	@GetMapping(value = "all")
-	public ResponseEntity<List<Category>> getCategories() {
-		List<Category> listaCategorias = categoryService.getAllCategory();
-		return ResponseEntity.ok(listaCategorias);
-	}
-
-	@GetMapping(value = "{categoryID}")
-	public ResponseEntity<Category> getCategoryById(@PathVariable("categoryID") Long categoryId) {
+	@GetMapping(value = "{productId}")
+	public ResponseEntity<Product> getProductById(@PathVariable(name = "productId") Long id) {
 		try {
-			Category category = categoryService.findCategoryById(categoryId);
-			return ResponseEntity.ok(category);
-		} catch (CategoryNotFoundException exception) {
+			Product product = productService.findProductById(id);
+			return ResponseEntity.ok(product);
+
+		} catch (ProductNotFoundException productNotFoundException) {
 			return ResponseEntity.noContent().build();
 		}
 	}
 
 	@GetMapping
-	public ResponseEntity<Category> getCategoryByName(
-			@RequestParam(name = "name", required = false) String categoryName) {
-		try {
-			Category category = categoryService.findCategoryByName(categoryName);
-			return ResponseEntity.ok(category);
-		} catch (CategoryNotFoundException exception) {
-			return ResponseEntity.noContent().build();
-		} catch (NullPointerException nullPointerException) {
-			return ResponseEntity.notFound().build();
-		}
+	public ResponseEntity<List<Product>> getAllProducts() {
+		return ResponseEntity.ok(productService.getAllProduct());
 	}
 
 	@PostMapping
-	public ResponseEntity<Category> createCategory(@RequestBody Category category) {
-		Category newCategory = categoryService.saveCategory(category);
-		return ResponseEntity.ok(newCategory);
+	public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+		Product newProduct = productService.saveProduct(product);
+		return ResponseEntity.ok(newProduct);
 
 	}
 
-	@DeleteMapping(value = "{categoryID}")
-	public ResponseEntity<Void> deleteCategory(@PathVariable("categoryID") Long categoryId) {
+	@DeleteMapping(value = "{productID}")
+	public ResponseEntity<Void> deleteProduct(@PathVariable("productID") Long productId) {
 		try {
-			categoryService.deleteCategoryById(categoryId);
+			productService.deleteProductById(productId);
 			return ResponseEntity.ok(null);
-		} catch (CategoryNotFoundException exception) {
+		} catch (ProductNotFoundException exception) {
 			return ResponseEntity.noContent().build();
 		}
 	}
 
 	@PutMapping
-	public ResponseEntity<Category> updateCategory(@RequestBody Category category) {
-		Category updateCategory = categoryService.saveCategory(category);
-		return ResponseEntity.ok(updateCategory);
+	public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
+		Product updateProduct = productService.saveProduct(product);
+		return ResponseEntity.ok(updateProduct);
 
 	}
 
