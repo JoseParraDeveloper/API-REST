@@ -1,6 +1,7 @@
 package com.products.serviceImpl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,9 +36,10 @@ public class CategoryServiceImpl implements ICategoryService {
 
 	@Override
 	public void deleteCategoryById(Long id) throws CategoryNotFoundException {
-		this.findCategoryById(id);
-		categoryRepository.deleteById(id);
-
+		Optional<Category> categoryOptional = categoryRepository.findById(id);
+		if (categoryOptional.isPresent()) {
+			categoryRepository.deleteById(id);
+		}
 	}
 
 	@Override
