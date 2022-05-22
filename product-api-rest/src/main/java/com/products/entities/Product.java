@@ -4,9 +4,12 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -25,12 +28,16 @@ public class Product {
 	private Boolean enabled;
 	@Column(name = "inStock")
 	private double inStock;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "category", nullable = false)
+	private Category category;
 
 	public Product() {
 		super();
 	}
 
-	public Product(Long id, String name, String description, BigDecimal price, Boolean enabled, double inStock) {
+	public Product(Long id, String name, String description, BigDecimal price, Boolean enabled, double inStock,
+			Category category) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -38,6 +45,7 @@ public class Product {
 		this.price = price;
 		this.enabled = enabled;
 		this.inStock = inStock;
+		this.category = category;
 	}
 
 	public Long getId() {
@@ -86,6 +94,14 @@ public class Product {
 
 	public void setInStock(double inStock) {
 		this.inStock = inStock;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 }
