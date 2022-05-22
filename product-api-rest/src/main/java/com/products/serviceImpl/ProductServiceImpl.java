@@ -29,7 +29,6 @@ public class ProductServiceImpl implements IProductService {
 		if (productOptional.isPresent()) {
 			productRepository.deleteById(id);
 		}
-
 	}
 
 	@Override
