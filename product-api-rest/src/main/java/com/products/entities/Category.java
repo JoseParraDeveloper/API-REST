@@ -1,6 +1,6 @@
 package com.products.entities;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,14 +29,14 @@ public class Category {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-	private List<Product> products;
+	private Set<Product> products;
 
 	public Category() {
 		super();
 
 	}
 
-	public Category(Long id, String name, String description, List<Product> products) {
+	public Category(Long id, String name, String description, Set<Product> products) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -68,11 +68,11 @@ public class Category {
 		this.description = description;
 	}
 
-	public List<Product> getProducts() {
+	public Set<Product> getProducts() {
 		return products;
 	}
 
-	public void setProducts(List<Product> products) {
+	public void setProducts(Set<Product> products) {
 		this.products = products;
 	}
 
